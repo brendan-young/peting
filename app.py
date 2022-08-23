@@ -1,14 +1,15 @@
-
 from flask import Flask, jsonify, g, request, session
 
 from werkzeug.security import generate_password_hash, check_password_hash
 import psycopg2
+import os
+import cloudinary.uploader
 
 from .db import get_db, close_db
 
 
 app = Flask(__name__)
-app.secret_key = 'sooper sekrit key'
+app.secret_key = os.environ.get('SECRET_KEY')
 
 @app.before_request
 def connect_to_db():
@@ -134,18 +135,25 @@ def show_pet_reviews(pet_id):
 
 @app.route('/pets/new', methods=['POST'])
 def new_pet():
-    name = request.json['name']
-    breed = request.json['breed']
-    about = request.json['about']
-    image_url = request.json['image_url']
-    user_id = request.json['user_id']
+    name = request.form['name']
+    breed = request.form['breed']
+    about = request.form['about']
+    image = request.files['image']
+    uploaded_image = cloudinary.uploader.upload(image)
+    image_url = uploaded_image['url'] 
+
+    user = session.get('user', None)
+
+    if user is None: 
+        return jsonify(success=False, msg='You must be logged in to create a pet')
+
     query = """
         INSERT INTO pets
         (name, breed, about, image_url, user_id)
         VALUES (%s, %s, %s, %s, %s)
         RETURNING *
     """
-    g.db['cursor'].execute(query, (name, breed, about, image_url, 1))
+    g.db['cursor'].execute(query, (name, breed, about, image_url, user['id']))
     g.db['connection'].commit()
     pet = g.db['cursor'].fetchone()
     return jsonify(pet)

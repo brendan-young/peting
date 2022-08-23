@@ -6,10 +6,10 @@ import os
 def get_db():
     if 'db' not in g:
         connection = psycopg2.connect(
-            host='localhost',
-            database='peting',
-            user='peting_app',
-            password='password'
+            host=os.environ.get('DB_HOST'),
+            database=os.environ.get('DB_DATABASE'),
+            user=os.environ.get('DB_USER'),
+            password=os.environ.get('DB_PASSWORD')
         )
 
         cursor = connection.cursor(cursor_factory=RealDictCursor)
