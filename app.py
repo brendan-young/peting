@@ -1,6 +1,6 @@
-from fileinput import close
-import json
 from flask import Flask, jsonify, g, request
+
+from werkzeug.security import generate_password_hash
 
 from .db import get_db, close_db
 
@@ -11,19 +11,22 @@ app = Flask(__name__)
 def connect_to_db():
     get_db()
 
+@app.after_request
+def disconnect_from_db(response):
+    close_db()
+    return response
+
 # ===========================
 # Users
 # ===========================
 
-# Route for users and all associated
+# Route for users and all associated pets
 
 @app.route('/users')
 def users():
-    db = get_db()
     query = 'SELECT * FROM users JOIN pets ON users.id = pets.user_id'
-    db['cursor'].execute(query)
-    users = db['cursor'].fetchall()
-    close_db()
+    g.db['cursor'].execute(query)
+    users = g.db['cursor'].fetchall()
     return jsonify(users)
 
 # ===========================
@@ -34,11 +37,9 @@ def users():
 
 @app.route('/pets')
 def home():
-    db = get_db()
     query = 'SELECT * FROM pets'
-    db['cursor'].execute(query)
-    pets = db['cursor'].fetchall()
-    close_db()
+    g.db['cursor'].execute(query)
+    pets = g.db['cursor'].fetchall()
     return jsonify(pets)
 
 
@@ -47,16 +48,14 @@ def home():
 @app.route('/pets/<pet_id>')
 def show_pet_reviews(pet_id):
     # return toy_reviews_id
-    db = get_db()
     query = """
     SELECT * FROM pets
     JOIN toy_reviews ON pets.id = toy_reviews.pet_id
     JOIN users ON pets.user_id = users.id
     WHERE pets.id = %s
     """
-    db['cursor'].execute(query, (pet_id,))
-    pet_reviews = db['cursor'].fetchone()
-    close_db()
+    g.db['cursor'].execute(query, (pet_id,))
+    pet_reviews = g.db['cursor'].fetchone()
     return jsonify(pet_reviews)
 
 #Route for new pet for a user
@@ -68,17 +67,15 @@ def new_pet():
     about = request.json['about']
     image_url = request.json['image_url']
     user_id = request.json['user_id']
-    db = get_db()
     query = """
         INSERT INTO pets
         (name, breed, about, image_url, user_id)
         VALUES (%s, %s, %s, %s, %s)
         RETURNING *
     """
-    db['cursor'].execute(query, (name, breed, about, image_url, 1))
-    db['connection'].commit()
-    pet = db['cursor'].fetchone()
-    close_db()
+    g.db['cursor'].execute(query, (name, breed, about, image_url, 1))
+    g.db['connection'].commit()
+    pet = g.db['cursor'].fetchone()
     return jsonify(pet)
 
 # Route to update pets
@@ -90,33 +87,29 @@ def update_pet(pet_id):
     about = request.json['about']
     image_url = request.json['image_url']
     user_id = request.json['user_id']
-    db = get_db()
     query = """
       UPDATE pets
       SET name = %s, breed = %s, image_url = %s, user_id = %s, pet_id = %s 
       WHERE pets.id = %s
       RETURNING *
     """
-    db['cursor'].execute(query, (name, breed, image_url, user_id, pet_id))
-    db['connection'].commit()
-    pet = db['cursor'].fetchone()
-    close_db()
+    g.db['cursor'].execute(query, (name, breed, image_url, user_id, pet_id))
+    g.db['connection'].commit()
+    pet = g.db['cursor'].fetchone()
     return jsonify(pet)
 
 # Route to DELETE pet
 
 @app.route('/pets/<pet_id>', methods=['DELETE'])
 def delete_pet(pet_id):
-    db = get_db()
     query = """
       DELETE FROM pets
       WHERE id = %s
       RETURNING *
     """
-    db['cursor'].execute(query, (pet_id))
-    db['connection'].commit()
-    pet = db['cursor'].fetchone()
-    close_db()
+    g.db['cursor'].execute(query, (pet_id))
+    g.db['connection'].commit()
+    pet = g.db['cursor'].fetchone()
     return jsonify(pet)
 
 # ===========================
@@ -127,11 +120,9 @@ def delete_pet(pet_id):
 
 @app.route('/toys')
 def show_toys():
-    db = get_db()
     query = 'SELECT * FROM toys'
-    db['cursor'].execute(query)
-    toys = db['cursor'].fetchall()
-    close_db()
+    g.db['cursor'].execute(query)
+    toys = g.db['cursor'].fetchall()
     return jsonify(toys)
 
 # ===========================
@@ -143,15 +134,13 @@ def show_toys():
 @app.route('/toys/<toy_id>')
 def show_toy_reviews(toy_id):
     # return toy_id
-    db = get_db()
     query = """
     SELECT * FROM toys
     JOIN toy_reviews ON toys.id = toy_reviews.toy_id
     WHERE toys.id = %s
     """
-    db['cursor'].execute(query, (toy_id,))
-    toy_reviews = db['cursor'].fetchall()
-    close_db()
+    g.db['cursor'].execute(query, (toy_id,))
+    toy_reviews = g.db['cursor'].fetchall()
     return jsonify(toy_reviews)
 
 
@@ -159,25 +148,21 @@ def show_toy_reviews(toy_id):
 
 @app.route('/reviews')
 def reviews():
-    db = get_db()
     query = 'SELECT * FROM toy_reviews'
-    db['cursor'].execute(query)
-    reviews = db['cursor'].fetchall()
-    close_db()
+    g.db['cursor'].execute(query)
+    reviews = g.db['cursor'].fetchall()
     return jsonify(reviews)
 
 #Route to show single review
 
 @app.route('/reviews/<review_id>')
 def show_review(review_id):
-    db = get_db()
     query = """
       SELECT * FROM toy_reviews
       WHERE toy_reviews.id = %s
     """
-    db['cursor'].execute(query, (review_id,))
-    show_review = db['cursor'].fetchone()
-    close_db
+    g.db['cursor'].execute(query, (review_id,))
+    show_review = g.db['cursor'].fetchone()
     return jsonify(show_review)
 
 
@@ -193,17 +178,15 @@ def new_review():
     repurchase = request.json['repurchase']
     pet_id = request.json['pet_id']
     toy_id = request.json['toy_id']
-    db = get_db()
     query = """
         INSERT INTO toy_reviews
         (headline, description, longevity, rating, enjoyment, repurchase, pet_id, toy_id)
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
         RETURNING *
     """
-    db['cursor'].execute(query, (headline, description, longevity, rating, enjoyment, repurchase, 1, 2))
-    db['connection'].commit()
-    review = db['cursor'].fetchone()
-    close_db()
+    g.db['cursor'].execute(query, (headline, description, longevity, rating, enjoyment, repurchase, 1, 2))
+    g.db['connection'].commit()
+    review = g.db['cursor'].fetchone()
     return jsonify(review)
 
 # Route to update a toy review
@@ -218,31 +201,27 @@ def update_review(review_id):
     repurchase = request.json['repurchase']
     pet_id = request.json['pet_id']
     toy_id = request.json['toy_id']
-    db = get_db()
     query = """
       UPDATE toy_reviews
       SET headline = %s, description = %s,  longevity = %s, rating = %s, enjoyment = %s, repurchase = %s, pet_id = %s, toy_id = %s 
       WHERE toy_reviews.id = %s
       RETURNING *
     """
-    db['cursor'].execute(query, (headline, description, longevity, rating, enjoyment, repurchase, pet_id, toy_id, review_id))
-    db['connection'].commit()
-    review = db['cursor'].fetchone()
-    close_db()
+    g.db['cursor'].execute(query, (headline, description, longevity, rating, enjoyment, repurchase, pet_id, toy_id, review_id))
+    g.db['connection'].commit()
+    review = g.db['cursor'].fetchone()
     return jsonify(review)
 
 # Route to DELETE a review
 
 @app.route('/reviews/<review_id>', methods=['DELETE'])
 def delete_review(review_id):
-    db = get_db()
     query = """
       DELETE FROM toy_reviews
       WHERE id = %s
       RETURNING *
     """
-    db['cursor'].execute(query, (review_id))
-    db['connection'].commit()
-    review = db['cursor'].fetchone()
-    close_db()
+    g.db['cursor'].execute(query, (review_id))
+    g.db['connection'].commit()
+    review = g.db['cursor'].fetchone()
     return jsonify(review)
