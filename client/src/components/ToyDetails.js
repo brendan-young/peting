@@ -13,7 +13,6 @@ const ToyDetails = ({ toys, reviews }) => {
   const { toyID, reviewID, petID } = useParams()
   const navigate = useNavigate()
 
-  // UseState
   const [toyReviews, setToyReviews] = useState([])
   
   const getToyReviews = async () => {
@@ -27,11 +26,6 @@ const ToyDetails = ({ toys, reviews }) => {
   useEffect(() => {
     getToyReviews()
   }, [])
-
-  // console.log(pets, "Pets")
-  // console.log(reviews, "Reviews")
-  // console.log(reviews[0].pet_id, "Pet ID inside the reviews table")
-
   
   console.log(toyReviews)
   const toy = toys.find((toy) => { return toy.id === Number(toyID) })
@@ -72,11 +66,6 @@ const ToyDetails = ({ toys, reviews }) => {
       </>
     )
    })
-  // console.log(allToyReviews, 'All toy reviews')
-  // console.log(toyReviews)
-  // const getPets = pets.find((getPets) => { return getPets.pet_id === Number(petID) })
-  // const getpet = pets.filter((pet) => { reviews.pet_id === pets.id })
-  // console.log(getPet)
 
   return (
     <>

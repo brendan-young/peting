@@ -10,6 +10,9 @@ import CreateReview from './components/CreateReview'
 import NavigationBar from './components/Nav/NavigationBar'
 import Home from './components/Home';
 import ToyDetails from './components/ToyDetails';
+import Login from './components/Users/Login'
+import Register from './components/Users/Register'
+import Logout from './components/Users/Logout';
 
 
 
@@ -17,6 +20,7 @@ const App = () => {
   const [toys, setToys] = useState([])
   const [reviews, setReviews] = useState([])
   const [pets, setPets] = useState([])
+  const [authorised, setAuthorised] = useState(null)
 
   const navigate = useNavigate();
 
@@ -54,6 +58,16 @@ const App = () => {
     getPets()
   }, [])
 
+  const handleAuthentification = (authed) => {
+    setAuthorised(authed)
+    navigate("/")
+  }
+
+  const handleLogout = () => {
+    setAuthorised(false)
+    navigate("/")
+  }
+
   return (
     <div className='App'>
       < NavigationBar />
@@ -82,6 +96,18 @@ const App = () => {
             element={
               <CreateReview />
             } />
+
+          <Route
+            path="/login"
+            element={<Login handleLogin={handleAuthentification} /> } />
+
+          <Route 
+            path="/register"
+            element={<Register handleRegister={handleAuthentification} />} />
+          
+          <Route 
+            path="/logout"
+            element={<Logout handleLogout={handleLogout} />} />
 
         </Routes>
       </main>
