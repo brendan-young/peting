@@ -14,9 +14,9 @@ import ToyDetails from './components/ToyDetails';
 
 
 const App = () => {
-  const [toys, setToys] = useState(null)
-  const [reviews, setReviews] = useState(null)
-  const [pets, setPets] = useState(null)
+  const [toys, setToys] = useState([])
+  const [reviews, setReviews] = useState([])
+  const [pets, setPets] = useState([])
 
   const navigate = useNavigate();
 
@@ -53,7 +53,6 @@ const App = () => {
   useEffect(() => {
     getPets()
   }, [])
-
 
   return (
     <div className='App'>

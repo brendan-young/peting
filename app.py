@@ -217,6 +217,7 @@ def show_toy_reviews(toy_id):
     query = """
     SELECT * FROM toys
     JOIN toy_reviews ON toys.id = toy_reviews.toy_id
+    JOIN pets ON toy_reviews.pet_id = pets.id
     WHERE toys.id = %s
     """
     g.db['cursor'].execute(query, (toy_id,))
