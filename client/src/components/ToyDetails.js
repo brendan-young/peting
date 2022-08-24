@@ -1,30 +1,45 @@
 import React from 'react'
 import { useParams } from "react-router-dom"
+import { useEffect } from 'react'
 
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
-const ToyDetails = ({ toys }) => {
-  const { toyID } = useParams()
-  console.log(toys, 'These are toys')
-  // console.log(toyID, 'These are the toys ID') -> coming in as undefined
+// Put in use effect that gives you data for this component
 
-  // const toyID = toys.id
+const ToyDetails = ({ toys, reviews, pets }) => {
+  const { toyID, reviewID } = useParams()
+
   const toy = toys.find((toy) => { return toy.id === Number(toyID) })
-  // const toy = toys.filter( obj => {
+  const getReviews = reviews.find((getReviews) => { return getReviews.toy_id === Number(toyID) })
+  console.log(getReviews)
 
-  // console.log(typeof toyID)
   return (
     <>
       <Card style={{ width: '30rem' }}>
-        <Card.Img variant="top" src={toy.photo} />
+        <Card.Img variant="top" src={toy.image_url} />
         <Card.Body>
           <Card.Title>{toy.name}</Card.Title>
           <Card.Text>
-            {toy.desc}
+            {toy.description}
           </Card.Text>
           <Card.Text>
            Price: ${toy.price}
+          </Card.Text>
+          {/* <Button variant="primary">Go somewhere</Button> */}
+        </Card.Body>
+      </Card>
+      <h2>Reviews</h2>
+      <Card style={{ width: '30rem' }}>
+        <Card.Img variant="top" src={pets.image_url} />
+        <Card.Body>
+          <Card.Title>{getReviews.headline}</Card.Title>
+          <Card.Title>{pets.name}</Card.Title>
+          <Card.Text>
+           {getReviews.date}
+          </Card.Text>
+          <Card.Text>
+            {getReviews.description}
           </Card.Text>
           {/* <Button variant="primary">Go somewhere</Button> */}
         </Card.Body>

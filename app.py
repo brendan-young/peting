@@ -131,7 +131,7 @@ def show_pet_reviews(pet_id):
     pet_reviews = g.db['cursor'].fetchone()
     return jsonify(pet_reviews)
 
-#Route for new pet for a user
+#Route for new pet for a user that must be logged in
 
 @app.route('/pets/new', methods=['POST'])
 def new_pet():
