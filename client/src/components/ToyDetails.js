@@ -2,6 +2,8 @@ import '../App.css';
 import React from 'react'
 import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from 'react'
+import { useUser } from '../context/user'
+
 
 
 import Button from 'react-bootstrap/Button';
@@ -10,6 +12,7 @@ import Card from 'react-bootstrap/Card';
 
 
 const ToyDetails = ({ toys, reviews }) => {
+  const [user, setUser] = useUser()
   const { toyID, reviewID, petID } = useParams()
   const navigate = useNavigate()
 
@@ -66,7 +69,7 @@ const ToyDetails = ({ toys, reviews }) => {
             <Card.Text>
              Price: ${toy.price}
             </Card.Text>
-            <Button variant="primary" onClick={() => {navigate("/review/new")}} >Write a review</Button>
+            { user && <Button variant="primary" onClick={() => {navigate("/review/new")}} >Write a review</Button>}
           </Card.Body>
         </Card>
       {allToyReviews}

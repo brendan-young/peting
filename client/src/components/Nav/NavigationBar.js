@@ -47,7 +47,7 @@ const NavigationBar = () => {
             </NavDropdown> */}
           </Nav>
         </Navbar.Collapse>
-        {user ? <p>Logged in as {user.username}</p> : <p>Anonymous user</p>}
+        {user ? <Navbar.Brand>Welcome Back {user.username}</Navbar.Brand> : <Navbar.Brand>Welcome Guest!</Navbar.Brand>}
       </Container>
     </Navbar>
   );
