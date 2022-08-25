@@ -1,12 +1,25 @@
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate, Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import { useUser } from '../../context/user';
 
 const NavigationBar = () => {
   const navigate = useNavigate()
+  const [user, setUser] = useUser()
+
+ useEffect(() => {
+  const checkLoggedIn = async () => {
+    const res = await fetch('/is-authenticated')
+    const data = await res.json()
+    setUser(data.user)
+  }
+  if (!user) checkLoggedIn() 
+ }, [user])
+
+
 
   return (
     <Navbar bg="light" expand="lg">
@@ -15,10 +28,13 @@ const NavigationBar = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link to="/" onClick={() => {navigate("/")}}>Home</Nav.Link>
-            <Nav.Link to="/login" onClick={() => {navigate("/login")}}>Login</Nav.Link>
-            <Nav.Link to="/register" onClick={() => {navigate("/register")}}>Register</Nav.Link>
-            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+            <Nav.Link as={Link} to="/" >Home</Nav.Link>
+            {!user && <Nav.Link as={Link} to="/login" >Login</Nav.Link>}
+            {!user && <Nav.Link as={Link} to="/register">Register</Nav.Link>}
+            {user && <Nav.Link as={Link} to="/logout">Logout</Nav.Link>}
+           {user && <Nav.Link as={Link} to={`/users/${user.id}`}>Your Pets</Nav.Link>}
+            
+            {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
                 Another action
@@ -28,9 +44,10 @@ const NavigationBar = () => {
               <NavDropdown.Item href="#action/3.4">
                 Separated link
               </NavDropdown.Item>
-            </NavDropdown>
+            </NavDropdown> */}
           </Nav>
         </Navbar.Collapse>
+        {user ? <p>Logged in as {user.username}</p> : <p>Anonymous user</p>}
       </Container>
     </Navbar>
   );

@@ -16,7 +16,7 @@ const CreateReview = () => {
           <Form.Control as="textarea" rows={1} />
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Group className="mb-3" controlId="description">
           <Form.Label>What are your thoughts?</Form.Label>
           <Form.Control as="textarea" rows={3} placeholder="Enter your thoughts" />
         </Form.Group>

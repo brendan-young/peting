@@ -33,6 +33,19 @@ def users():
     users = g.db['cursor'].fetchall()
     return jsonify(users)
 
+# Route for each user and associated pets
+
+@app.route('/users/<user_id>')
+def show_user(user_id):
+    query = """
+        SELECT * FROM users 
+        JOIN pets ON users.id = pets.user_id
+        WHERE users.id = %s
+    """
+    g.db['cursor'].execute(query, (user_id))
+    user = g.db['cursor'].fetchall()
+    return jsonify(user)
+
 # Route to REGISTER with password hashing and SESSION
 
 @app.route('/register', methods=['POST'])
@@ -162,18 +175,19 @@ def new_pet():
 
 @app.route('/pets/<pet_id>', methods=['PUT'])
 def update_pet(pet_id):
-    name = request.json['name']
-    breed = request.json['breed']
-    about = request.json['about']
-    image_url = request.json['image_url']
-    user_id = request.json['user_id']
+    name = request.form['name']
+    breed = request.form['breed']
+    about = request.form['about']
+    image = request.files['image']
+    uploaded_image = cloudinary.uploader.upload(image)
+    image_url = uploaded_image['url'] 
     query = """
       UPDATE pets
-      SET name = %s, breed = %s, image_url = %s, user_id = %s, pet_id = %s 
+      SET name = %s, breed = %s, about = %s, image_url = %s
       WHERE pets.id = %s
       RETURNING *
     """
-    g.db['cursor'].execute(query, (name, breed, image_url, user_id, pet_id))
+    g.db['cursor'].execute(query, (name, breed, about, image_url, pet_id))
     g.db['connection'].commit()
     pet = g.db['cursor'].fetchone()
     return jsonify(pet)

@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import { useUser } from '../../context/user'
 
 const Register = (props) => {
+  const [user, setUser] = useUser()
   const [fields, setFields] = useState({ username: "", password: "" })
 
   const handleChange = (e) => {
@@ -19,6 +21,7 @@ const Register = (props) => {
     })
     const data = await res.json()
     console.log(data)
+    setUser(data.user)
     props.handleRegister(data.authorised)
   }
 

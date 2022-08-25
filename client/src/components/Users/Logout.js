@@ -1,18 +1,21 @@
 import React from 'react'
 
 import Button from 'react-bootstrap/Button';
+import { useUser } from '../../context/user';
 
-const Logout = (props) => {
-
-  const handleLogout = async () => {
+const Logout = ({ handleLogout }) => {
+  const [user, setUser] = useUser()
+  const logMeOut = async () => {
     console.log("Logged Out")
     const res = await fetch('/logout', {
       method: 'POST'
     })
+    setUser(null)
+    handleLogout()
   }
 
   return (
-    <Button onClick={props.handleLogout}> Logout </Button>
+    <Button onClick={logMeOut}> Logout </Button>
   )
 }
 

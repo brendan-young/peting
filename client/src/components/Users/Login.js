@@ -1,8 +1,11 @@
 import { useState } from 'react'
+import { useUser } from '../../context/user'
 
 
 const Login = (props) => {
   const [fields, setFields] = useState({ username: "", password: "" })
+  const [user, setUser] = useUser()
+
   // console.log(fields)
 
   const handleChange = (e) => {
@@ -20,7 +23,8 @@ const Login = (props) => {
       body: JSON.stringify(fields)
     })
     const data = await res.json()
-    console.log(data.msg)
+    console.log(data)
+    setUser(data.user)
     props.handleLogin(data.authorised)
   }
 
