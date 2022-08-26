@@ -129,7 +129,7 @@ const App = () => {
   return (
     <div className='App'>
       < NavigationBar />
-      <main>
+      <div className='main'>
         <Routes>
           <Route
             path="/"
@@ -186,7 +186,7 @@ const App = () => {
             element={<Logout handleLogout={handleLogout} />} />
 
         </Routes>
-      </main>
+      </div>
     </div>
   )
 }

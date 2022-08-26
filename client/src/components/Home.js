@@ -1,3 +1,4 @@
+import '../App.css';
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -8,6 +9,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
+import Container from "react-bootstrap/Container"
 
 const Home = ({ toys }) => {
   const [user, setUser] = useUser()
@@ -18,7 +20,7 @@ const Home = ({ toys }) => {
   const toyList = toys.map((toy) => {
     return (
       <Col key={toy.id}>
-        <Card style={{ width: "18rem" }}>
+        <Card style={{ width: "22rem" }} className="m-3">
           <Card.Img variant="top" src={toy.image_url} />
           <Card.Body>
             <Card.Title>{toy.name}</Card.Title>
@@ -43,7 +45,7 @@ const Home = ({ toys }) => {
   });
 
   return (
-    <Row xs={1} md={4}>
+    <Row lg={3}>
       {toyList}
     </Row>
   );

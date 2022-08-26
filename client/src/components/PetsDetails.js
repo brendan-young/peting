@@ -32,21 +32,21 @@ const PetsDetails = ({ users, handleDeletePet, pets }) => {
     return (
       <div>
         <Col key={pet.id}>
-          <Card style={{ width: "18rem" }} className='card'>
+          <Card style={{ width: "18rem" }} className="m-3">
             <Card.Img variant="top" src={pet.image_url}  />
             <Card.Body>
               <Card.Title>{pet.name}</Card.Title>
               <Card.Text>{pet.breed}</Card.Text>
               <Card.Text>{pet.about}</Card.Text>
               <Button
-                className="mr-2"
+                className="ml-2"
                 variant="primary"
                 onClick={() => navigate("/")}
               >
                 Update
               </Button>{' '}
               <Button
-                className="button"
+                className="ml-2"
                 variant="danger"
                 onClick={() => handleDeletePet(pet.id)}
               >
@@ -62,7 +62,7 @@ const PetsDetails = ({ users, handleDeletePet, pets }) => {
   return (
     <div>
       <Button
-        className="button"
+        className="m-3"
         variant="primary"
         onClick={() => navigate(`/pets/new`)}
       >

@@ -37,18 +37,29 @@ const ToyDetails = ({ toys, reviews }) => {
       <div key={toy.id}>
         
         <h2>Reviews</h2>
-        <Card className='review-card' style={{ width: '20rem' }}>
+        <Card className='mb-3' style={{ width: '30rem' }}>
           <Card.Img variant="top" src={review.image_url} />
           <Card.Body>
-            <Card.Title>{getReviews.headline}</Card.Title>
-            <Card.Title>{review.name}</Card.Title>
+            <Card.Title>Name : {review.name}</Card.Title>
+            <Card.Title>"{getReviews.headline}"</Card.Title>
             <Card.Text>
              {getReviews.date}
             </Card.Text>
             <Card.Text>
-             Breed : {review.breed}
+             <b>Breed : </b>{review.breed}
             </Card.Text>
             <Card.Text>
+              <b>Longevity:</b> {getReviews.longevity}/5
+            </Card.Text>
+            <Card.Text>
+             <b>Enjoyment:</b>  {getReviews.enjoyment}/5
+            </Card.Text>
+            <Card.Text>
+              <b>Overall Rating: </b>{getReviews.rating}/5
+            </Card.Text>
+            <Card.Text>
+              <b>My Final Thoughts...</b>
+              <br></br>
               {getReviews.description}
             </Card.Text>
           </Card.Body>

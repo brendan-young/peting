@@ -1,11 +1,14 @@
 .App {
   padding-left: 20px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.button {
-  padding-left: 10px;
-  padding-top: 50px;
+.main {
+  margin-left: auto;
+  margin-right: auto;
 }
+
 
 .review-card {
   padding-bottom: 10px;
@@ -14,3 +17,10 @@
 h2 { 
   padding-top: 10px;
 }
+
+.card-img-top {
+  width: 100%;
+  height: 35vh;
+  object-fit: cover;
+}
+
