@@ -101,7 +101,7 @@ const App = () => {
       let updatedPet = {...pets.find((pet) => pet.id === petID) }
       const index = pets.findIndex((pet) => pet.id === petID)
       setPets([...pets.slice(0, index), updatedPet, ...pets.slice(index + 1)])
-      navigate(`/pets`)
+      navigate(`/`)
     } else {
       console.log("Error editing pet ", petID);
     }

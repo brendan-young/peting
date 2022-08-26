@@ -16,7 +16,7 @@ CREATE TABLE pets (
   name VARCHAR(100),
   breed VARCHAR(100),
   about text,
-  image_url VARCHAR DEFAULT 'https://res.cloudinary.com/dtfpk4gbd/image/upload/v1657589215/jkkoukty2ltng3bm45vu.jpg',
+  image_url VARCHAR DEFAULT 'https://placedog.net/500',
   user_id SERIAL REFERENCES users (id) ON DELETE CASCADE 
 );
 

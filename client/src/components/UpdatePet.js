@@ -17,26 +17,7 @@ const UpdatePet = ({ pets, handleUpdatePet }) => {
   const [fields, setFields] = useState(pet)
   const [image, setImage] = useState(pet.image_url)
   
-
-  // const getPets = async () => {
-  //   const url = '/pets'
-  //   const res = await fetch(url)
-  //   const data = await res.json()
-  //   console.log(data)
-  //   setPets(data)
-  // }
-
-  // useEffect(() => {
-  //   const getPets = async () => {
-  //     const url = '/pets'
-  //     const res = await fetch(url)
-  //     const data = await res.json()
-  //     console.log(data)
-  //     setPets(data)
-  //   }
-  //   getPets()
-  //   .catch(console.error)
-  // }, [])
+  const navigate = useNavigate()
 
  
   console.log(pets, "Pets state on UpdatePet page")
@@ -64,6 +45,7 @@ const UpdatePet = ({ pets, handleUpdatePet }) => {
       ...fields,
       image: image},
       fields.id)
+      navigate(`/`)
   }
 
   return (
@@ -114,7 +96,9 @@ const UpdatePet = ({ pets, handleUpdatePet }) => {
         
         />
 
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" 
+        // onClick={() => }
+        >
           Submit
         </Button>
       </Form>

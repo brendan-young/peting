@@ -56,3 +56,10 @@ There is a lot left in this project that I would like to complete in order to ac
 4. Search functionality for keywords 
 5. Filter functionality for highest rated toys with keywords e.g dog toys, highest rated from high -> low
 6.  Comment section for toys on top of reviews
+7. Theme styling using Bootstrap
+8. Fix timestamp formatting
+9. Show reviews in user pets index
+10. Create button in toy show page to register to create a review
+11. Checkbox for repurchase in reviews
+12. About, contact us page
+

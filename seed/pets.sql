@@ -26,10 +26,27 @@ INSERT INTO pets (name, breed, about, image_url, user_id) VALUES (
   'https://res.cloudinary.com/dtfpk4gbd/image/upload/v1657589215/jkkoukty2ltng3bm45vu.jpg',
   4
 );
+
 INSERT INTO pets (name, breed, about, image_url, user_id) VALUES (
   'Loki',
   'Groodle',
   'Older boy with the heart of a lion and the sleeping skills of a sloth',
-  'https://res.cloudinary.com/dtfpk4gbd/image/upload/v1657589215/jkkoukty2ltng3bm45vu.jpg',
-  5
+  'https://placedog.net/500',
+  2
 );
+
+INSERT INTO pets (name, breed, about, image_url, user_id) VALUES (
+  'Jones',
+  'Domestic Shorthair',
+  'Obsessed with food and cuddles. Sometimes she pretends to be a human.',
+  'https://res.cloudinary.com/dpk0o7ztt/image/upload/v1661297749/jones_cng5va.jpg',
+  1
+);
+INSERT INTO pets (name, breed, about, image_url, user_id) VALUES (
+  'Mochi',
+  'Domestic Shorthair',
+  'I am a 10-month-old athlete who loves all kinds of chasers and teasers. I can get hyper-excited on the ones with feathers!',
+  'https://res.cloudinary.com/deqn98hwp/image/upload/v1661297290/mochi_nvjxyo.jpg',
+  2
+);
+

@@ -53,3 +53,36 @@ INSERT INTO toy_reviews (date, headline, description, longevity, rating, enjoyme
   5,
   5
 );
+INSERT INTO toy_reviews (date, headline, description, longevity, rating, enjoyment, repurchase, pet_id, toy_id) VALUES (
+  '2021-09-21 12:47:17',
+  'Lorem ipsum dolor sit amet, consectetur.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu lobortis arcu. Mauris eu est eros. Pellentesque elementum gravida elit.',
+  1,
+  2,
+  2,
+  false,
+  7,
+  1
+);
+INSERT INTO toy_reviews (date, headline, description, longevity, rating, enjoyment, repurchase, pet_id, toy_id) VALUES (
+  '2021-09-21 12:47:17',
+  'Lorem ipsum dolor sit amet, consectetur.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu lobortis arcu. Mauris eu est eros. Pellentesque elementum gravida elit.',
+  1,
+  2,
+  2,
+  true,
+  6,
+  2
+);
+INSERT INTO toy_reviews (date, headline, description, longevity, rating, enjoyment, repurchase, pet_id, toy_id) VALUES (
+  '2021-09-21 12:47:17',
+  'Lorem ipsum dolor sit amet, consectetur.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu lobortis arcu. Mauris eu est eros. Pellentesque elementum gravida elit.',
+  4,
+  5,
+  5,
+  true,
+  3,
+  1
+);

@@ -8,7 +8,6 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import Container from "react-bootstrap/Container";
 
 const PetsDetails = ({ users, handleDeletePet, pets }) => {
   const { userID, petsID } = useParams();
@@ -41,7 +40,7 @@ const PetsDetails = ({ users, handleDeletePet, pets }) => {
               <Button
                 className="ml-2"
                 variant="primary"
-                onClick={() => navigate("/")}
+                onClick={() => navigate(`/pets/${pet.id}/update`)}
               >
                 Update
               </Button>{' '}
